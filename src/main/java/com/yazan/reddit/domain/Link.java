@@ -4,6 +4,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Link extends Auditable {
 
     @Id
@@ -25,4 +27,8 @@ public class Link extends Auditable {
 
     @OneToMany(mappedBy = "link")
     private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
 }
