@@ -2,6 +2,7 @@ package com.yazan.reddit.controller;
 
 import com.yazan.reddit.domain.Link;
 import com.yazan.reddit.repository.LinkRepository;
+import com.yazan.reddit.service.LinkService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,22 +19,22 @@ import java.util.Optional;
 public class LinkController {
     private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
 
-    private LinkRepository linkRepository;
+    private LinkService linkService;
 
-    public LinkController(LinkRepository linkRepository) {
-        this.linkRepository = linkRepository;
+    public LinkController(LinkService linkService) {
+        this.linkService = linkService;
     }
 
     @GetMapping("/")
     public String list(Model model) {
-        model.addAttribute("links", linkRepository.findAll());
+        model.addAttribute("links", linkService.getLinks());
         return "link/list";
     }
 
     @GetMapping("link/{id}")
     public String read(@PathVariable Long id,Model model) {
 
-        Optional<Link> link = linkRepository.findById(id);
+        Optional<Link> link = linkService.getLink(id);
         if (link.isPresent()) {
             model.addAttribute("link", link.get());
             model.addAttribute("success",model.containsAttribute("success"));
@@ -57,7 +58,7 @@ public class LinkController {
             return "link/submit";
         } else {
             // save our link
-            linkRepository.save(link);
+            linkService.addLink(link);
             logger.info("New link was saved successfully");
             redirectAttributes
                     .addAttribute("id",link.getId())
