@@ -14,8 +14,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-//@RequiredArgsConstructor
-//@NoArgsConstructor
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 @ToString
 @Table(name = "\"user\"")
@@ -68,5 +68,12 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public void addRole(Role userRole) {
+        this.roles.add(userRole);
+    }
+    public void addRoles(Set<Role> roles) {
+        roles.forEach(this::addRole);
     }
 }
