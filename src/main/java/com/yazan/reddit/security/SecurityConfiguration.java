@@ -40,6 +40,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .formLogin(form -> form.loginPage("/login").usernameParameter("email").permitAll())
+                .logout((logout) -> logout.logoutUrl("/logout"))
+                .rememberMe(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
     }

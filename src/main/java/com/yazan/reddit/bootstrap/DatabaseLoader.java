@@ -74,7 +74,6 @@ public class DatabaseLoader implements CommandLineRunner {
 
         User user = new User("user@gmail.com",secret,true);
         user.addRole(userRole);
-
         userDetailsService.saveUser(user);
 
         User admin = new User("admin@gmail.com",secret,true);
