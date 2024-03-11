@@ -7,6 +7,8 @@ import com.yazan.reddit.repository.CommentRepository;
 import com.yazan.reddit.repository.LinkRepository;
 import com.yazan.reddit.repository.RoleRepository;
 import com.yazan.reddit.repository.UserRepository;
+import com.yazan.reddit.security.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,9 @@ public class DatabaseLoader implements CommandLineRunner {
     private CommentRepository commentRepository;
     private RoleRepository roleRepository;
     private UserRepository userRepository;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     public DatabaseLoader(LinkRepository linkRepository, CommentRepository commentRepository, RoleRepository roleRepository, UserRepository userRepository) {
         this.linkRepository = linkRepository;
@@ -69,15 +74,17 @@ public class DatabaseLoader implements CommandLineRunner {
 
         User user = new User("user@gmail.com",secret,true);
         user.addRole(userRole);
-        userRepository.save(user);
+
+        userDetailsService.saveUser(user);
 
         User admin = new User("admin@gmail.com",secret,true);
         admin.addRole(adminRole);
-        userRepository.save(admin);
+        userDetailsService.saveUser(user);
 
         User master = new User("master@gmail.com",secret,true);
         master.addRoles(new HashSet<>(Arrays.asList(userRole,adminRole)));
-        userRepository.save(master);
+        userDetailsService.saveUser(master);
+
 
     }
 
