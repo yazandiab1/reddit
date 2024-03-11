@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 public abstract class Auditable {
 
     @CreatedBy
-    private String createdBy = "yazan";
+    private String createdBy;
 
     @CreatedDate
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime creationDate;
 
     @LastModifiedBy
-    private String lastModifiedBy = "yazan";
+    private String lastModifiedBy;
 
     @LastModifiedDate
-    private LocalDateTime lastModifiedDate = LocalDateTime.now();
+    private LocalDateTime lastModifiedDate;
 
     public String getCreatedBy() {
         return createdBy;
