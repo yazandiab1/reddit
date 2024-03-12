@@ -1,8 +1,7 @@
 package com.yazan.reddit.controller;
 
 import com.yazan.reddit.domain.Link;
-import com.yazan.reddit.repository.LinkRepository;
-import com.yazan.reddit.service.LinkService;
+import com.yazan.reddit.service.LinkServiceImpl;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +18,9 @@ import java.util.Optional;
 public class LinkController {
     private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
 
-    private LinkService linkService;
+    private LinkServiceImpl linkService;
 
-    public LinkController(LinkService linkService) {
+    public LinkController(LinkServiceImpl linkService) {
         this.linkService = linkService;
     }
 
