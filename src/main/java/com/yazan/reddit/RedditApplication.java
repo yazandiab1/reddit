@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @SpringBootApplication
 public class RedditApplication {
@@ -21,6 +22,11 @@ public class RedditApplication {
     @Bean
     PrettyTime prettyTime() {
         return new PrettyTime();
+    }
+
+    @Bean
+    public SpringSecurityDialect securityDialect() {
+        return new SpringSecurityDialect();
     }
 
 }

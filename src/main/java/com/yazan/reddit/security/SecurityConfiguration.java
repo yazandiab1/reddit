@@ -37,11 +37,13 @@ public class SecurityConfiguration {
                         .requestMatchers("/").hasRole("USER")
                         .requestMatchers("/link/submit").hasRole("ADMIN")
                         .requestMatchers("/**").permitAll()
+                        .requestMatchers("/register/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login").usernameParameter("email").permitAll())
                 .logout((logout) -> logout.logoutUrl("/logout"))
+
                 .rememberMe(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
