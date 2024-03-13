@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/").hasRole("USER")
-                        .requestMatchers("/link/submit").hasRole("ADMIN")
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/link/**").hasRole("USER")
                         .requestMatchers("/register/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login").usernameParameter("email").permitAll())
                 .logout((logout) -> logout.logoutUrl("/logout"))
-
                 .rememberMe(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
@@ -53,13 +51,4 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/h2-console", "/h2-console/**");
     }
-
-//    @Bean
-//    public AuthenticationProvider authenticationProvider(){
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(userDetailsService);
-//        authenticationProvider.setPasswordEncoder(encoder);
-//        return authenticationProvider;
-//    }
-
 }
