@@ -1,10 +1,13 @@
 package com.yazan.reddit.controller;
 
+import com.yazan.reddit.domain.Comment;
 import com.yazan.reddit.domain.Link;
+import com.yazan.reddit.service.CommentServiceImpl;
 import com.yazan.reddit.service.LinkServiceImpl;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,9 +22,11 @@ public class LinkController {
     private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
 
     private LinkServiceImpl linkService;
+    private CommentServiceImpl commentService;
 
-    public LinkController(LinkServiceImpl linkService) {
+    public LinkController(LinkServiceImpl linkService, CommentServiceImpl commentService) {
         this.linkService = linkService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -35,7 +40,13 @@ public class LinkController {
 
         Optional<Link> link = linkService.getLink(id);
         if (link.isPresent()) {
-            model.addAttribute("link", link.get());
+            Link current_link = link.get();
+
+            Comment comment = new Comment();
+            comment.setLink(current_link);
+
+            model.addAttribute("comment", comment);
+            model.addAttribute("link", current_link);
             model.addAttribute("success",model.containsAttribute("success"));
             return "link/view";
         } else {
@@ -64,6 +75,19 @@ public class LinkController {
                     .addFlashAttribute("success",true);
             return "redirect:/link/{id}";
         }
+    }
+
+    @Secured({"ROLE_USER"})
+    @PostMapping("/link/comments")
+    public String addComment(@Valid Comment comment, BindingResult bindingResult) {
+        if ( bindingResult.hasErrors() ) {
+            logger.info("There was a problem in add this comment");
+        } else  {
+            commentService.addComment(comment);
+            logger.info("new comment was saved successfully");
+        }
+
+        return "redirect:/link/" + comment.getLink().getId();
     }
 
 }
