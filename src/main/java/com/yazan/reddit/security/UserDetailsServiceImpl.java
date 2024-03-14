@@ -1,6 +1,7 @@
 package com.yazan.reddit.security;
 
 import com.yazan.reddit.domain.User;
+import com.yazan.reddit.domain.validator.PasswordsMatch;
 import com.yazan.reddit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public void saveUser(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user = userRepository.save(user);
-        System.out.println("added user successfuly " + user.getUsername());
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

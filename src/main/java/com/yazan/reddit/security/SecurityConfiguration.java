@@ -36,8 +36,8 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/register").permitAll()
                         .requestMatchers("/link/**").hasRole("USER")
-                        .requestMatchers("/register/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form.loginPage("/login").usernameParameter("email").permitAll())
@@ -49,6 +49,6 @@ public class SecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/h2-console", "/h2-console/**");
+        return (web) -> web.ignoring().requestMatchers("/register");
     }
 }

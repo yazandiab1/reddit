@@ -1,5 +1,6 @@
 package com.yazan.reddit.domain;
 
+import com.yazan.reddit.domain.validator.PasswordsMatch;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Getter @Setter
 @ToString
 @Table(name = "\"user\"")
+@PasswordsMatch
 public class User implements UserDetails {
     @Id
     @GeneratedValue
@@ -62,6 +64,10 @@ public class User implements UserDetails {
     @NotEmpty(message = "Please enter alias.")
     @Column(nullable = false, unique = true)
     private String alias;
+
+    @Transient
+    @NotEmpty(message = "Please enter alias.")
+    private String confirmPassword;
 
     public String getFullName(){
         return firstName + " " + lastName;
