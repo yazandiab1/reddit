@@ -69,7 +69,7 @@ public class User implements UserDetails {
     @NotEmpty(message = "Please enter alias.")
     private String confirmPassword;
 
-    private String activation_code;
+    private String activationCode;
 
     public String getFullName(){
         return firstName + " " + lastName;

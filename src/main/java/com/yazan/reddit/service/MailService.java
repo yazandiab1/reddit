@@ -56,12 +56,12 @@ public class MailService {
     @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "templates/email/activation", "Springit User Activation");
+        sendEmailFromTemplate(user, "email/activation", "Springit User Activation");
     }
 
     @Async
     public void sendWelcomeEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
-        sendEmailFromTemplate(user, "templates/email/welcome", "Welcome new Springit User");
+        sendEmailFromTemplate(user, "email/welcome", "Welcome new Springit User");
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService{
         // assign a role to this user
         user.addRole(roleService.findByName("ROLE_USER"));
 
-        user.setActivation_code(UUID.randomUUID().toString());
+        user.setActivationCode(UUID.randomUUID().toString());
 
         // disable the user
         user.setEnabled(false);
@@ -72,5 +73,10 @@ public class UserServiceImpl implements UserService{
     public void sendWelcomeEmail(User user) {
         mailService.sendWelcomeEmail(user);
     }
+
+    public Optional<User> findByEmailAndActivationCode(String email, String activationCode){
+        return userRepository.findByEmailAndActivationCode(email,activationCode);
+    }
+
 
 }
